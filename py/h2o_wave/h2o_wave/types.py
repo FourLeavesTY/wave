@@ -3413,6 +3413,7 @@ class TableColumn:
             cell_overflow: Optional[str] = None,
             filters: Optional[List[str]] = None,
             align: Optional[str] = None,
+            tooltip: Optional[str] = None,
     ):
         _guard_scalar('TableColumn.name', name, (str,), True, False, False)
         _guard_scalar('TableColumn.label', label, (str,), False, False, False)
@@ -3427,6 +3428,7 @@ class TableColumn:
         _guard_enum('TableColumn.cell_overflow', cell_overflow, _TableColumnCellOverflow, True)
         _guard_vector('TableColumn.filters', filters, (str,), False, True, False)
         _guard_enum('TableColumn.align', align, _TableColumnAlign, True)
+        _guard_scalar('TableColumn.tooltip', tooltip, (str,), True, False, False)
         self.name = name
         """An identifying name for this column."""
         self.label = label
@@ -3453,6 +3455,8 @@ class TableColumn:
         """List of values to allow filtering by, needed when pagination is set. Only applicable to filterable columns."""
         self.align = align
         """Defines how to align values in a column. One of 'left', 'center', 'right'. See enum h2o_wave.ui.TableColumnAlign."""
+        self.tooltip = tooltip
+        """A tooltip for this column."""
 
     def dump(self) -> Dict:
         """Returns the contents of this object as a dict."""
@@ -3469,6 +3473,7 @@ class TableColumn:
         _guard_enum('TableColumn.cell_overflow', self.cell_overflow, _TableColumnCellOverflow, True)
         _guard_vector('TableColumn.filters', self.filters, (str,), False, True, False)
         _guard_enum('TableColumn.align', self.align, _TableColumnAlign, True)
+        _guard_scalar('TableColumn.tooltip', self.tooltip, (str,), True, False, False)
         return _dump(
             name=self.name,
             label=self.label,
@@ -3483,6 +3488,7 @@ class TableColumn:
             cell_overflow=self.cell_overflow,
             filters=self.filters,
             align=self.align,
+            tooltip=self.tooltip,
         )
 
     @staticmethod
@@ -3514,6 +3520,8 @@ class TableColumn:
         _guard_vector('TableColumn.filters', __d_filters, (str,), False, True, False)
         __d_align: Any = __d.get('align')
         _guard_enum('TableColumn.align', __d_align, _TableColumnAlign, True)
+        __d_tooltip: Any = __d.get('tooltip')
+        _guard_scalar('TableColumn.tooltip', __d_name, (str,), True, False, False)
         name: str = __d_name
         label: str = __d_label
         min_width: Optional[str] = __d_min_width
@@ -3527,6 +3535,7 @@ class TableColumn:
         cell_overflow: Optional[str] = __d_cell_overflow
         filters: Optional[List[str]] = __d_filters
         align: Optional[str] = __d_align
+        tooltip: Optional[str] = __d_tooltip
         return TableColumn(
             name,
             label,
@@ -3541,6 +3550,7 @@ class TableColumn:
             cell_overflow,
             filters,
             align,
+            tooltip,
         )
 
 

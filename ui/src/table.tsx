@@ -75,6 +75,8 @@ interface TableColumn {
   filters?: S[]
   /** Defines how to align values in a column. */
   align?: 'left' | 'center' | 'right'
+  /** The text displayed on the tooltip. */
+  tooltip?: S
 }
 
 /** Create a table row. */
@@ -166,6 +168,7 @@ type WaveColumn = Fluent.IColumn & {
   cellOverflow?: 'tooltip' | 'wrap'
   filters?: S[]
   align?: 'left' | 'center' | 'right'
+  tooltip?: S
 }
 
 type DataTable = {
@@ -406,11 +409,26 @@ const
       }, [items, onRenderMenuList]),
       onRenderDetailsHeader = React.useCallback((props?: Fluent.IDetailsHeaderProps) => {
         if (!props) return <span />
-
+      
+        const onRenderColumnHeaderTooltip = (tooltipHostProps: any) => (
+          <>
+            <span>{tooltipHostProps?.children}</span>
+            {tooltipHostProps?.id?.includes('value') && (
+              <span>
+                {/* TODO: Replace content with actual content. */}
+                <Fluent.TooltipHost content={"This is the tooltip"}>
+                  <Fluent.Icon iconName="info" />
+                </Fluent.TooltipHost>
+              </span>
+            )}
+          </>
+        )
+      
         return (
           <Fluent.Sticky stickyPosition={Fluent.StickyPositionType.Header} isScrollSynced>
             <Fluent.DetailsHeader
               {...props}
+              onRenderColumnHeaderTooltip={onRenderColumnHeaderTooltip}
               isAllCollapsed={groups?.every(group => group.isCollapsed)}
               styles={{
                 ...props.styles,
